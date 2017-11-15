@@ -1,0 +1,18 @@
+{
+  "name": "badao",
+  "version": "1.0.0",
+  "description": "Behavior Asset Dao",
+  "main": "ba.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Bill Gleim",
+  "license": "ISC",
+  "dependencies": {
+    "babel-runtime": "^6.26.0",
+    "file-system": "^2.2.2",
+    "fs": "0.0.1-security",
+    "fs-extra": "^4.0.2",
+    "truffle-hdwallet-provider": "0.0.3"
+  }
+}

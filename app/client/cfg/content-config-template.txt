@@ -1,0 +1,3 @@
+// auto-configure this section after contract deployments
+PurchasableContentHex = '_place_content_binary_here_';
+PurchasableContentContract = web3.eth.contract(JSON.parse('_place_content_abi_here_'));
