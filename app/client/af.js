@@ -26,14 +26,34 @@ Template['publications'].helpers({
 
 Template['view'].events({
     'click button.view': function (e, template) {
+        var handle;
         var content = template.find('input').value;
-        alert('attempting to view content: ' + content + '\nPurchased = ' + ArtFactoryContent.purchased.call({from: template.find('input').value, gas: 50000}));
+        alert('attempting to view content: ' + content);
 
-        if (ArtFactoryContent.purchased.call({from: template.find('input').value, gas: 50000}) == true)
-        // this will download the file in absence of an appropriate browser plugin
-          window.open('http://localhost:8080/ipfs/' + content);
+        // retrieve address of contract associated with content name
+        var requestedContentContractAddress = content;
 
-        template.find('input').value = '';
+        // instantiate our local copy of the content contract
+        var artRequested = ArtFactoryContentContract.at(requestedContentContractAddress);
+
+        const requestTx = artRequested.getHandle(
+          {from: web3.eth.accounts[0], gas: 500000},
+          function(error, result) {
+            if (!error) {
+              console.log('Requested Content handle callback result = ' + result);
+
+              handle = result;
+              
+              if (handle)
+              // this will download the file in absence of an appropriate browser plugin
+                window.open('http://localhost:8080/ipfs/' + handle);
+
+              template.find('input').value = '';
+            } 
+              else console.error(error);
+          }
+        );
+        console.log("getHandle( ) tx request return value: " + requestTx);
     },
 }); 
 
@@ -41,14 +61,32 @@ Template['pay'].events({
     'click button.pay': function (e, template) {
         const content = template.find('input').value;
         console.log(content);
-        window.IpfsApi().get(content, function (err, stream) {
-          stream.on('data', (file) => {
-            // write the file's path and contents to standard out
-            console.log(file.path);
-            console.log(file);
-          });
-        });
-      template.find('input').value = '';
+
+        // retrieve address of contract associated with content name
+        var requestedContentContractAddress = content;
+
+        // instantiate our local copy of the content contract
+        var artRequested = ArtFactoryContentContract.at(requestedContentContractAddress);
+
+        const priceQueryTx = artRequested.price({}, 
+          function(error, result) {
+            if (!error) { 
+              contentPrice = result; 
+
+              const paymentTx = artRequested.pay(
+                {value: contentPrice, from: web3.eth.accounts[0], gas: 500000},
+                function(error, result) {
+                  if (!error) {
+                    console.log('Requested Content Result = ' + result);
+                  } else console.error(error);
+                }
+              );
+              console.log("payment tx: " + paymentTx);
+            } else console.error(error);
+          }
+        );
+
+        template.find('input').value = '';
     },
 }); 
 
@@ -63,8 +101,22 @@ Template['url_publish'].events({
               (err, result) => {
               if (err) {
                 throw err
+              } else {
+                console.log(result[0].hash);
+                ArtFactoryContentContract.new(
+                  result[0].hash, 
+                  10000000, 
+                  result[0].hash, 
+                  {from: web3.eth.accounts[0], gas: 1000000, data: ArtFactoryContentHex}, 
+                  function(error, result) {
+                    if (!error) {
+                      contentCreationTransaction = result;
+                      console.log(result);
+                    } 
+                      else console.error(error);
+                  }
+                );
               }
-              console.log(result)
             });
             template.find('input').value = '';
         }
