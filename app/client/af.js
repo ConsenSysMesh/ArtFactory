@@ -36,6 +36,7 @@ Template['view'].events({
         // instantiate our local copy of the content contract
         var artRequested = ArtFactoryContentContract.at(requestedContentContractAddress);
 
+        // if paid, play or download
         const requestTx = artRequested.getHandle(
           {from: web3.eth.accounts[0], gas: 500000},
           function(error, result) {
@@ -47,6 +48,34 @@ Template['view'].events({
               if (handle)
               // this will download the file in absence of an appropriate browser plugin
                 window.open('http://localhost:8080/ipfs/' + handle);
+              // if not paid, pay - then can play/download next button activation
+              else {
+                const priceQueryTx = artRequested.price({}, 
+                  function(error, result) {
+                    if (!error) { 
+                      contentPrice = result; 
+
+                      const paymentTx = artRequested.pay(
+                        {value: contentPrice, from: web3.eth.accounts[0], gas: 500000},
+                        function(error, result) {
+                          if (!error) {
+                            console.log('content payment tx = ' + result);
+                            const requestTx = artRequested.getHandle(
+                              {from: web3.eth.accounts[0], gas: 500000},
+                              function(error, result) {
+                                if (!error) {
+                                  console.log('Requested Content handle (after payment) callback result = ' + result);
+                                } else console.error(error);
+                              }
+                            );        
+                          } else console.error(error);
+                        }
+                      );
+                      console.log("payment tx: " + paymentTx);
+                    } else console.error(error);
+                  }
+                );
+              }
 
               template.find('input').value = '';
             } 
