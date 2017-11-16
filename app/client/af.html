@@ -11,23 +11,21 @@
     <h2>Publish by file</h2>
     {{> file_publish}}
 
+    <h2>Purchase Content</h2>
+    {{> pay}}
+
+    <h2>Block Infos</h2>
+    {{> blockchainStatus}}
+
          disabled for demo -->
 
-    <h2>Publish by url</h2>
+    <h2>Publish</h2>
 
     {{> url_publish}}
-
-    <h2>Purchase Content</h2>
-
-    {{> pay}}
 
     <h2>Get Content</h2>
 
     {{> view}}
-
-    <h2>Block Infos</h2>
-
-    {{> blockchainStatus}}
 
     <h2>Latest publications</h2>
 
@@ -82,5 +80,5 @@
 
 <template name="view">
     <input type="text">
-    <button class="view">View</button>
+    <button class="view">View/Download</button>
 </template>
