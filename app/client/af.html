@@ -1,0 +1,86 @@
+<head>
+    <title>Art Factory</title>
+    <script src="https://npmcdn.com/ipfs-api/dist/index.js"></script>
+</head>
+
+<body>
+    <h1>Art Factory</h1>
+
+    <!-- disabled for demo 
+
+    <h2>Publish by file</h2>
+    {{> file_publish}}
+
+         disabled for demo -->
+
+    <h2>Publish by url</h2>
+
+    {{> url_publish}}
+
+    <h2>Purchase Content</h2>
+
+    {{> pay}}
+
+    <h2>Get Content</h2>
+
+    {{> view}}
+
+    <h2>Block Infos</h2>
+
+    {{> blockchainStatus}}
+
+    <h2>Latest publications</h2>
+
+    {{> publications}}
+
+    <h2>Latest payments</h2>
+
+    {{> deposits}}</body>
+
+<template name="blockchainStatus">
+    <pre>{{currentBlock}}</pre>
+</template>
+
+<template name="deposits">
+    {{#each deposits}}
+        <p>From: {{from}}</p>
+        <p>Value: {{value}}</p>
+        <p>Block: {{blockNumber}}</p>
+        ------------------
+    {{/each}}
+</template>
+
+<template name="publications">
+    {{#each publications}}
+        <p>Creator: {{creator}}</p>
+        <p>Name: {{name}}</p>
+        <p>Price: {{price}}</p>
+        <p>Block: {{blockNumber}}</p>
+        ------------------
+    {{/each}}
+</template>
+
+<template name="url_publish">
+    <input type="text">
+    <button class="publish">Publish Art (from URL)</button>
+</template>
+
+<template name="file_publish">
+    <input type="file">
+    <button class="publish">Publish Art (from file)</button>
+</template>
+
+<template name="cost_entry">
+    <input type="text" value="10000000">
+    <button class="cost_entry">Pay</button>
+</template>
+
+<template name="pay">
+    <input type="text">
+    <button class="pay">Pay</button>
+</template>
+
+<template name="view">
+    <input type="text">
+    <button class="view">View</button>
+</template>
