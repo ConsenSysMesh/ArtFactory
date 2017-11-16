@@ -30,29 +30,24 @@ contract ArtFactoryContent {
 	}
 
 	// payment transaction
-  function pay() payable returns (bool) {
-    if (msg.value > 0) {
+  function pay() payable returns (string) {
+    // add to value associated with payer
+  	amountPaid[msg.sender] += msg.value;
 
-      // add to value associated with payer
-    	amountPaid[msg.sender] += msg.value;
+    // if reached purchase threshold, set state to paid and re-encrypt/store content
+  	if (amountPaid[msg.sender] >= price) {
+  		paid[msg.sender] = true;
 
-      // if reached purchase threshold, set state to paid and re-encrypt/store content
-    	if (amountPaid[msg.sender] >= price) {
-    		paid[msg.sender] = true;
+      handles[msg.sender] = handle; // will be encrypted individually for each consumer
+  	}
 
-        handles[msg.sender] = handle; // will be encrypted individually for each consumer
-    	}
+    // add to the contract balance
+    balance += msg.value;
 
-      // add to the contract balance
-      balance += msg.value;
+  	// send notification deposit is complete
+    Deposit(msg.sender, msg.value);
 
-    	// send notification deposit is complete
-      Deposit(msg.sender, msg.value);
-
-      return true;
-    } else {
-      return false;
-    }
+    return handles[msg.sender];
   }
 
   // payment transaction via curator
