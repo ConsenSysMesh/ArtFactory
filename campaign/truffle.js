@@ -8,7 +8,7 @@ module.exports = {
     ropsten: {
       provider: new HDWalletProvider(mnemonic, "https://ropsten.infura.io/"+infura_apikey),
       network_id: 3, // Official Ethereum test network
-      gas: 1000000
+      gas: 3300000
     },
     development: {
       host: "localhost",

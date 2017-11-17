@@ -1,0 +1,3 @@
+// auto-configure this section after contract deployments
+ArtFactoryTokenHex = '_place_token_binary_here_';
+ArtFactoryTokenContract = web3.eth.contract(JSON.parse('_place_token_abi_here_'));
