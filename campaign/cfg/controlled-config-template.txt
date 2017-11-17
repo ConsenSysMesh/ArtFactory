@@ -1,0 +1,3 @@
+// auto-configure this section after contract deployments
+ControlledHex = '_place_controlled_binary_here_';
+ControlledContract = web3.eth.contract(JSON.parse('_place_controlled_abi_here_'));

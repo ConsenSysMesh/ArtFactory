@@ -1,0 +1,3 @@
+// auto-configure this section after contract deployments
+ArtFactoryCampaignHex = '_place_campaign_binary_here_';
+ArtFactoryCampaignContract = web3.eth.contract(JSON.parse('_place_campaign_abi_here_'));

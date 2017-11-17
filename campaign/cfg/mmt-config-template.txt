@@ -1,0 +1,3 @@
+// auto-configure this section after contract deployments
+MMTHex = '_place_mmt_binary_here_';
+MMTContract = web3.eth.contract(JSON.parse('_place_mmt_abi_here_'));
