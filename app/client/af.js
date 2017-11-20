@@ -121,10 +121,11 @@ Template['pay'].events({
 
 Template['url_publish'].events({
     'click button.publish': function (e, template) {
-        const proxyurl = "https://galvanize-cors-proxy.herokuapp.com/";
-        const url = template.find('input').value;
+        const proxyurl = "http://localhost:1337/";
+        var url = template.find('input').value;
 
         if (url != "") {
+            url = url.replace(/^http:\/\//, '');
             window.IpfsApi().util.addFromURL(
               proxyurl + url,
               (err, result) => {
