@@ -5,6 +5,7 @@ Tokens for content
 # Quick Start
 
 ## Application start
+```
 cd artfactory/
 
 truffle migrate --network ropsten
@@ -14,8 +15,9 @@ cd app/
 meteor npm install
 
 meteor
-
+```
 ## IPFS local daemon configuration and start
+```
 $ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin "[\"http://localhost:3000\"]"
 
 $ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Credentials "[\"true\"]"
@@ -23,15 +25,16 @@ $ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Credentials "[\"true\"
 $ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods "[\"PUT\", \"POST\", \"GET\"]"
 
 $ ipfs daemon &
-
+```
 ## Browser dev console
-
+```
 // test data:
 // .mp4 video
 // ipfs handle: QmTca4A43f4kEvzTouvYTegtp6KobixRqweV12NrvwwtFP
 //
 // drone swarm behavior 
 // ipfs handle: QmVHaFq59emoKZhtSyUkqEfvyuffkUmzgmBQA7pv2GygXA
+```
 
 // access IPFS via client-side Javascript API
 
