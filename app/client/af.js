@@ -121,7 +121,7 @@ Template['pay'].events({
 
 Template['url_publish'].events({
     'click button.publish': function (e, template) {
-        const proxyurl = "https://cors-anywhere.herokuapp.com/";
+        const proxyurl = "https://galvanize-cors-proxy.herokuapp.com/";
         const url = template.find('input').value;
 
         if (url != "") {
