@@ -4,7 +4,7 @@ var fs = require('../node_modules/file-system'); // use local instead of truffle
 function dappConfigure(instance, type) {
 	fs.readFile('./app/client/cfg/' + type + '-config-template.txt', 'utf8', function (err, data) {
 		if (!err) {
-		  binary = instance.constructor._json.unlinked_binary;
+		  binary = instance.constructor._json.bytecode;
 		  abi = web3.eth.contract(instance.abi);
 	  	data = data.replace(
 	  		new RegExp('_place_' + type + '_binary_here_', 'g'), binary.toString());
