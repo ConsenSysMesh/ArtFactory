@@ -20,7 +20,7 @@ contract ArtFactoryContent {
   event Deposit(address from, uint value);
 
   // content creation
-	function ArtFactoryContent(string _name, uint _price, string _handle) {
+	function ArtFactoryContent(string _name, uint _price, string _handle) payable {
 		creator = msg.sender;
 		name = _name;
 		price = _price; // zero if not provided
