@@ -28,7 +28,10 @@ Template['view'].events({
     'click button.view': function (e, template) {
         var handle;
         var content = template.find('input').value;
-        alert('attempting to view content: ' + content);
+        if (template.lastNode.innerText == "Purchase")
+          alert('attempting to purchase content: ' + content);
+        else
+          alert('attempting to view content: ' + content);
 
         // retrieve address of contract associated with content name
         var requestedContentContractAddress = content;
@@ -41,15 +44,21 @@ Template['view'].events({
           {from: web3.eth.accounts[0], gas: 500000},
           function(error, result) {
             if (!error) {
-              console.log('Requested Content handle callback result = ' + result);
+              if (result != "") console.log('Decrypting content from ' + result);
 
               handle = result;
               
-              if (handle)
-              // this will download the file in absence of an appropriate browser plugin
+              if (handle) {
+                // PAID
+                // this will download the file in absence of an appropriate browser plugin
                 window.open('http://localhost:8080/ipfs/' + handle);
-              // if not paid, pay - then can play/download next button activation
-              else {
+
+                // clear UI text entry field
+                template.find('input').value = '';
+
+              } else {
+                // UNPAID
+                // if not paid, pay - then can play/download next button activation
                 const priceQueryTx = artRequested.price({}, 
                   function(error, result) {
                     if (!error) { 
@@ -64,58 +73,22 @@ Template['view'].events({
                               {from: web3.eth.accounts[0], gas: 500000},
                               function(error, result) {
                                 if (!error) {
-                                  console.log('Requested Content handle (after payment) callback result = ' + result);
+                                  // set UI prompt for user        
+                                  template.lastNode.innerText = "Purchase Pending";
                                 } else console.error(error);
                               }
                             );        
                           } else console.error(error);
                         }
                       );
-                      console.log("payment tx: " + paymentTx);
                     } else console.error(error);
                   }
                 );
               }
-
-              template.find('input').value = '';
             } 
-              else console.error(error);
+            else console.error(error);
           }
         );
-        console.log("getHandle( ) tx request return value: " + requestTx);
-    },
-}); 
-
-Template['pay'].events({
-    'click button.pay': function (e, template) {
-        const content = template.find('input').value;
-        console.log(content);
-
-        // retrieve address of contract associated with content name
-        var requestedContentContractAddress = content;
-
-        // instantiate our local copy of the content contract
-        var artRequested = ArtFactoryContentContract.at(requestedContentContractAddress);
-
-        const priceQueryTx = artRequested.price({}, 
-          function(error, result) {
-            if (!error) { 
-              contentPrice = result; 
-
-              const paymentTx = artRequested.pay(
-                {value: contentPrice, from: web3.eth.accounts[0], gas: 500000},
-                function(error, result) {
-                  if (!error) {
-                    console.log('Requested Content Result = ' + result);
-                  } else console.error(error);
-                }
-              );
-              console.log("payment tx: " + paymentTx);
-            } else console.error(error);
-          }
-        );
-
-        template.find('input').value = '';
     },
 }); 
 
@@ -132,7 +105,7 @@ Template['url_publish'].events({
               if (err) {
                 throw err
               } else {
-                console.log(result[0].hash);
+                console.log("Encrypting content to " + result[0].hash + "...");
                 ArtFactoryContentContract.new(
                   result[0].hash, 
                   10000000, 
@@ -141,9 +114,12 @@ Template['url_publish'].events({
                   function(error, result) {
                     if (!error) {
                       contentCreationTransaction = result;
-                      console.log(result);
-                    } 
-                      else console.error(error);
+                      if (result.address != undefined)
+                        console.log(result.address);
+                      else
+                        console.log("Art creation tx being mined ...");
+                        console.log(result);
+                    } else console.error(error);
                   }
                 );
               }
