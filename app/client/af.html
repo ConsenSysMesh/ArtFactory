@@ -6,6 +6,14 @@
 <body>
     <h1>Art Factory</h1>
 
+    <h2>Publish</h2>
+
+    {{> url_publish}}
+
+    <h2>Get Content</h2>
+
+    {{> view}}
+
     <!-- disabled for demo 
 
     <h2>Publish by file</h2>
@@ -17,23 +25,17 @@
     <h2>Block Infos</h2>
     {{> blockchainStatus}}
 
-         disabled for demo -->
-
-    <h2>Publish</h2>
-
-    {{> url_publish}}
-
-    <h2>Get Content</h2>
-
-    {{> view}}
-
     <h2>Latest publications</h2>
 
     {{> publications}}
 
     <h2>Latest payments</h2>
 
-    {{> deposits}}</body>
+    {{> deposits}}
+
+     disabled for demo -->
+
+</body>
 
 <template name="blockchainStatus">
     <pre>{{currentBlock}}</pre>

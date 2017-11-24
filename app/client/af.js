@@ -44,7 +44,7 @@ Template['view'].events({
           {from: web3.eth.accounts[0], gas: 500000},
           function(error, result) {
             if (!error) {
-              console.log('Requested Content handle callback result = ' + result);
+              if (result != "") console.log('Decrypting content from ' + result);
 
               handle = result;
               
@@ -73,8 +73,6 @@ Template['view'].events({
                               {from: web3.eth.accounts[0], gas: 500000},
                               function(error, result) {
                                 if (!error) {
-                                  console.log('Requested Content handle (after payment) callback result = ' + result);
-
                                   // set UI prompt for user        
                                   template.lastNode.innerText = "Purchase Pending";
                                 } else console.error(error);
@@ -83,7 +81,6 @@ Template['view'].events({
                           } else console.error(error);
                         }
                       );
-                      console.log("payment tx: " + paymentTx);
                     } else console.error(error);
                   }
                 );
@@ -92,7 +89,6 @@ Template['view'].events({
             else console.error(error);
           }
         );
-        console.log("getHandle( ) tx request return value: " + requestTx);
     },
 }); 
 
@@ -109,7 +105,7 @@ Template['url_publish'].events({
               if (err) {
                 throw err
               } else {
-                console.log(result[0].hash);
+                console.log("Encrypting content to " + result[0].hash + "...");
                 ArtFactoryContentContract.new(
                   result[0].hash, 
                   10000000, 
