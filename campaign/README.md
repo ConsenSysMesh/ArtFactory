@@ -1,3 +1,11 @@
+ArtFactoryTokenContract.new(web3.eth.accounts[0],{from:web3.eth.accounts[0], gas:3000000, data: ArtFactoryTokenHex}, function(e, r) {if (e) console.error(e); else console.log(r);});
+
+artFactoryToken = ArtFactoryTokenContract.at(0xC9ADCD330bfa766acF8dbC06438f82560842a5Fb);
+
+artFactoryToken.generateTokens(web3.eth.accounts[1], 1000);
+
+---
+
 Using network 'ropsten'.
 
 Running migration: 2_deploy_contracts.js
