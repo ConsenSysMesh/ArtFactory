@@ -22,10 +22,10 @@
     <h2>Purchase Content</h2>
     {{> pay}}
 
-     disabled for demo -->
-
     <h2>Block Infos</h2>
     {{> blockchainStatus}}
+
+     disabled for demo -->
 
     <h2>Latest publications</h2>
 
@@ -37,12 +37,9 @@
 
 </body>
 
-<template name="blockchainStatus">
-    <pre>{{currentBlock}}</pre>
-</template>
-
 <template name="deposits">
     {{#each deposits}}
+        <p>Art: {{art}}</p>
         <p>From: {{from}}</p>
         <p>Value: {{value}}</p>
         <p>Block: {{blockNumber}}</p>
@@ -53,6 +50,7 @@
 <template name="publications">
     {{#each publications}}
         <p>Creator: {{creator}}</p>
+        <p>Art: {{art}}</p>
         <p>Name: {{name}}</p>
         <p>Price: {{price}}</p>
         <p>Block: {{blockNumber}}</p>
@@ -73,4 +71,8 @@
 <template name="view">
     <input type="text">
     <button class="view">Purchase</button>
+</template>
+
+<template name="blockchainStatus">
+    <pre>{{currentBlock}}</pre>
 </template>
