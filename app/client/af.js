@@ -28,10 +28,14 @@ Template['view'].events({
     'click button.view': function (e, template) {
         var handle;
         var content = template.find('input').value;
-        if (template.lastNode.innerText == "Purchase")
-          alert('attempting to purchase content: ' + content);
-        else
+        if (template.lastNode.innerText == "Purchase") {
+          alert('attempting to purchase content ' + content);
+        } else {
+          // set UI prompt for user        
+          template.lastNode.innerText = "Purchase Pending";
+
           alert('attempting to view content: ' + content);
+        }
 
         // retrieve address of contract associated with content name
         var requestedContentContractAddress = content;
@@ -64,7 +68,16 @@ Template['view'].events({
                     if (!error) { 
                       contentPrice = result; 
 
+                      // replace this address with portal DApp administrator wallet
+                      const portalWalletAddress = '0x90318C662291ed5950e26B76D44f3f04A6c66413';
+
+                      // PORTAL 1% PAYMENT
+                      //const paymentTx = artRequested.portalPay(
+                      //  portalWalletAddress,
+
+                      // STRAIGHT TO ARTIST PAYMENT
                       const paymentTx = artRequested.pay(
+
                         {value: contentPrice, from: web3.eth.accounts[0], gas: 500000},
                         function(error, result) {
                           if (!error) {
@@ -121,14 +134,15 @@ Template['url_publish'].events({
 
                         // Check if money arrived
                         // Note checking from block 0 is non-performant
-                        artFactoryContent.Deposit({},{fromBlock: 0, toBlock: 'latest'}).watch(function(e, log) {
+                        artFactoryContent.Deposit({},{fromBlock: log.blockNumber, toBlock: 'latest'}).watch(function(e, log) {
                             if(!e) {
-                                console.log('Deposit event log: ' + log);
+                                console.log('Deposit event log: ' + JSON.stringify(log));
 
                                 console.log('Money arrived, from:'+ log.args.from, log.args.value.toString(10));
                                 // add the transaction to our collection
                                 Deposits.upsert('tx_'+ log.transactionHash ,{
                                     from: log.args.from,
+                                    art: log.address,
                                     value: log.args.value.toString(10),
                                     blockNumber: log.blockNumber
                                 });
@@ -147,6 +161,7 @@ Template['url_publish'].events({
                                 // add the transaction to our collection
                                 Publications.upsert('tx_'+ log.transactionHash ,{
                                     creator: log.args._creator,
+                                    art: log.address,
                                     name: log.args._name,
                                     price: log.args._price.toString(10),
                                     blockNumber: log.blockNumber
