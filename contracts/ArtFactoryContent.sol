@@ -20,13 +20,13 @@ contract ArtFactoryContent {
   event Deposit(address from, uint value);
 
   // content creation
-	function ArtFactoryContent(string _name, uint _price, string _handle) payable {
+	constructor (string _name, uint _price, string _handle) payable {
 		creator = msg.sender;
 		name = _name;
 		price = _price; // zero if not provided
     handle = _handle;
 
-		Publish(msg.sender, name, price);
+		emit Publish(msg.sender, name, price);
 	}
 
 	// payment transaction
@@ -45,7 +45,7 @@ contract ArtFactoryContent {
     balance += msg.value;
 
   	// send notification deposit is complete
-    Deposit(msg.sender, msg.value);
+    emit Deposit(msg.sender, msg.value);
 
     return handles[msg.sender];
   }
@@ -59,12 +59,12 @@ contract ArtFactoryContent {
 
     if (portalPayAmount + creatorPayAmount != msg.value) {
       // return funds when the creator/portal split creates an unwanted remainder
-      revert;
+      revert();
     }
 
     // send one percent to referring portal
     // do not handle the case if send() has been overridden and fails
-    if (_portal.send(portalPayAmount) != true) revert;
+    if (_portal.send(portalPayAmount) != true) revert();
 
     // add to value associated with payer
     amountPaid[msg.sender] += msg.value;
@@ -80,7 +80,7 @@ contract ArtFactoryContent {
     balance += msg.value;
 
     // send notification deposit is complete
-    Deposit(msg.sender, msg.value);
+    emit Deposit(msg.sender, msg.value);
   }
 
 	function purchased() constant returns(bool) {
@@ -93,14 +93,14 @@ contract ArtFactoryContent {
 
   // return balance
   function viewBalance() constant returns(uint) {
-    if (msg.sender != creator) revert;
+    if (msg.sender != creator) revert();
 
     return balance;
   }
 
   // withdraw complete balance
   function withdraw() {
-    if (msg.sender != creator) revert;
+    if (msg.sender != creator) revert();
 
     // do not handle the case if send() has been overridden and fails
     if (msg.sender.send(balance)) {
@@ -110,7 +110,7 @@ contract ArtFactoryContent {
 
   // withdraw up to complete balance
   function withdraw(uint value) {
-    if (msg.sender != creator) revert;
+    if (msg.sender != creator) revert();
 
     if (value <= balance) {
       // do not handle the case if send() has been overridden and fails

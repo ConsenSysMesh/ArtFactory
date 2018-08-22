@@ -1,40 +1,85 @@
 <head>
     <title>Art Factory</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://npmcdn.com/ipfs-api/dist/index.js"></script>
 </head>
 
-<body>
-    <h1>Art Factory</h1>
+<body >
+    <nav class="navbar navbar-light bg-light " style="margin-bottom: 30px;">
+      <a class="navbar-brand" style="margin-left: 50%;">ArtFactory</a>
+      <form class="form-inline">
+        <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"> -->
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Publish</button>
+      </form>
+    </nav>
+    <div class="container">
+        <div class="row">
+            
+            <div class="col-sm-12">
+                
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      
+                      <div class="modal-body" style="height: 200px;">
+                        <form class="form-inline">
+                          <div class="form-group mx-sm-3 mb-2">
+                            
+                            <input type="text" class="form-control" id="inputUrl" placeholder="enter url">
+                          </div>
+                          <button type="submit" class="btn btn-primary mb-2">Publish Art (from url)</button>
 
-    <h2>Publish</h2>
+                          <div class="form-group mx-sm-3 mb-2">
+                            
+                            <input type="text" class="form-control" id="inputAddress" placeholder="address">
+                          </div>
+                          <button type="submit" class="btn btn-primary mb-2">Purchase</button>
+                        </form>
+                       
 
-    {{> url_publish}}
+                        <!-- <h2>Publish</h2>
 
-    <h2>Get Content</h2>
+                        {{> url_publish}}
 
-    {{> view}}
+                        <h2>Get Content</h2>
 
-    <!-- disabled for demo 
+                        {{> view}}
 
-    <h2>Publish by file</h2>
-    {{> file_publish}}
+                         <span>disabled for demo </span>
 
-    <h2>Purchase Content</h2>
-    {{> pay}}
+                        <h2>Publish by file</h2>
+                        {{> file_publish}}
 
-    <h2>Block Infos</h2>
-    {{> blockchainStatus}}
+                        <h2>Purchase Content</h2>
+                        {{> pay}}
 
-     disabled for demo -->
+                        <h2>Block Infos</h2>
+                        {{> blockchainStatus}}
 
-    <h2>Latest publications</h2>
+                          <span>disabled for demo </span>
 
-    {{> publications}}
+                        <h2>Latest publications</h2>
 
-    <h2>Latest payments</h2>
+                        {{> publications}}
 
-    {{> deposits}}
+                        <h2>Latest payments</h2>
 
+                        {{> deposits}} -->
+                      </div>
+                      <!-- <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                      </div> -->
+                    </div>
+                  </div>
+                
+
+                
+            </div>
+        
+        </div>
+    </div>
+    
 </body>
 
 <template name="deposits">
