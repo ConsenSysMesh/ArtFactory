@@ -24,3 +24,5 @@ standard-minifier-css
 standard-minifier-js
 shell-server
 dynamic-import
+kadira:flow-router
+kadira:blaze-layout

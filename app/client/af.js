@@ -1,3 +1,4 @@
+BlazeLayout.setRoot('#__blaze-root');
 Session.setDefault('latestBlock', {});
 
 Template['blockchainStatus'].helpers({
@@ -105,12 +106,13 @@ Template['view'].events({
     },
 }); 
 
-Template['url_publish'].events({
+Template['publish'].events({
     'click button.publish': function (e, template) {
-        const proxyurl = "http://localhost:1337/";
+        //const proxyurl = "http://localhost:1337/";
+        const proxyurl = "";
         var url = template.find('input').value;
 
-        if (url != "") {
+        if (url !== "") {
             url = url.replace(/^http:\/\//, '');
             window.IpfsApi().util.addFromURL(
               proxyurl + url,

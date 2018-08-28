@@ -1,123 +1,104 @@
 <head>
-    <title>Art Factory</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://npmcdn.com/ipfs-api/dist/index.js"></script>
+  <title>Art Factory</title>
+  <script src="https://npmcdn.com/ipfs-api/dist/index.js"></script>
 </head>
 
 <body >
-    <nav class="navbar navbar-light bg-light " style="margin-bottom: 30px;">
-      <a class="navbar-brand" style="margin-left: 50%;">ArtFactory</a>
-      <form class="form-inline">
-        <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"> -->
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Publish</button>
-      </form>
-    </nav>
-    <div class="container">
-        <div class="row">
-            
-            <div class="col-sm-12">
-                
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      
-                      <div class="modal-body" style="height: 200px;">
-                        <form class="form-inline">
-                          <div class="form-group mx-sm-3 mb-2">
-                            
-                            <input type="text" class="form-control" id="inputUrl" placeholder="enter url">
-                          </div>
-                          <button type="submit" class="btn btn-primary mb-2">Publish Art (from url)</button>
-
-                          <div class="form-group mx-sm-3 mb-2">
-                            
-                            <input type="text" class="form-control" id="inputAddress" placeholder="address">
-                          </div>
-                          <button type="submit" class="btn btn-primary mb-2">Purchase</button>
-                        </form>
-                       
-
-                        <!-- <h2>Publish</h2>
-
-                        {{> url_publish}}
-
-                        <h2>Get Content</h2>
-
-                        {{> view}}
-
-                         <span>disabled for demo </span>
-
-                        <h2>Publish by file</h2>
-                        {{> file_publish}}
-
-                        <h2>Purchase Content</h2>
-                        {{> pay}}
-
-                        <h2>Block Infos</h2>
-                        {{> blockchainStatus}}
-
-                          <span>disabled for demo </span>
-
-                        <h2>Latest publications</h2>
-
-                        {{> publications}}
-
-                        <h2>Latest payments</h2>
-
-                        {{> deposits}} -->
-                      </div>
-                      <!-- <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                      </div> -->
-                    </div>
-                  </div>
-                
-
-                
-            </div>
-        
-        </div>
+  <header class="navbar navbar-light bg-light justify-content-between" style='margin-bottom: 30px;' >
+    <a class="navbar-brand">ArtFactory</a>
+    <a class="btn btn-bd-download d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3" href="https://github.com/twbs/bootstrap/archive/v4.0.0.zip">Log In</a>
+  </header>
+  <div class="container">
+    <div class="row">
+      <div id="__blaze-root" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      </div>
     </div>
-    
+  </div>
 </body>
 
+<template name="layout1">
+  <div class="jumbotron text-center col-md-8 offset-md-2" style="background-color: white;">
+    {{> Template.dynamic template=messages}}
+    {{> Template.dynamic template=main}}
+    {{> Template.dynamic template=footer}}
+  </div>
+</template>
+
+<template name="home">
+  <h2 class="display-4">Welcome to ArtFactory!</h2>
+  <p class="lead">A media distribution and monetization network for independent artists</p>
+  <hr class="my-4">
+  <p>Try it out!</p>
+  <p class="lead">
+    <div class="input-group ">
+      <input type="text" class="form-control" placeholder="artist, film" aria-label="Recipient's username" aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <button class="btn publish" style="background-color: #BFE6BA;" type="button">Search</button>
+      </div>
+    </div>
+  </p>
+  
+</template>
+
+
 <template name="deposits">
-    {{#each deposits}}
-        <p>Art: {{art}}</p>
-        <p>From: {{from}}</p>
-        <p>Value: {{value}}</p>
-        <p>Block: {{blockNumber}}</p>
-        ------------------
-    {{/each}}
+  {{#each deposits}}
+    <p>Art: {{art}}</p>
+    <p>From: {{from}}</p>
+    <p>Value: {{value}}</p>
+    <p>Block: {{blockNumber}}</p>
+    ------------------
+  {{/each}}
 </template>
 
 <template name="publications">
-    {{#each publications}}
-        <p>Creator: {{creator}}</p>
-        <p>Art: {{art}}</p>
-        <p>Name: {{name}}</p>
-        <p>Price: {{price}}</p>
-        <p>Block: {{blockNumber}}</p>
-        ------------------
-    {{/each}}
+  <h2>Content</h2>
+  {{#each publications}}
+    <p>Creator: {{creator}}</p>
+    <p>Art: {{art}}</p>
+    <p>Name: {{name}}</p>
+    <p>Price: {{price}}</p>
+    <p>Block: {{blockNumber}}</p>
+      ------------------
+  {{/each}}
 </template>
 
-<template name="url_publish">
-    <input type="text">
-    <button class="publish">Publish Art (from URL)</button>
+<template name="publish">
+  
+  <h2>Upload to ArtFactory</h2>
+  <div class="col-xs-12">
+    <label class="btn publish" style="background-color: #BFE6BA;">
+      Choose a file to Upload <input type="file" hidden>
+  </label>
+   <!--  <input type="file" style="display: none">
+    <button class="publish">Publish Art (from file)</button> -->
+  </div>
+  <div class="col-xs-12">
+    OR
+  </div>
+  <div class="col-xs-12">
+    <!-- <input type="text">
+    <button class="publish btn btn-light">Publish Art (from URL)</button> -->
+    <div class="input-group ">
+      <input type="text" class="form-control" placeholder="enter file url" aria-label="Recipient's username" aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <button class="btn publish" style="background-color: #BFE6BA;" type="button">Upload</button>
+      </div>
+    </div>
+  </div>
+  
 </template>
 
 <template name="file_publish">
-    <input type="file">
-    <button class="publish">Publish Art (from file)</button>
+  <input type="file">
+  <button class="publish">Publish Art (from file)</button>
 </template>
 
 <template name="view">
-    <input type="text">
-    <button class="view">Purchase</button>
+  <input type="text">
+  <button class="view">Purchase</button>
 </template>
 
 <template name="blockchainStatus">
-    <pre>{{currentBlock}}</pre>
+  <pre>{{currentBlock}}</pre>
 </template>
