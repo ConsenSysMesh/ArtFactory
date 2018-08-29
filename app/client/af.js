@@ -25,10 +25,10 @@ Template['publications'].helpers({
     }
 });
 
-Template['view'].events({
+Template['home'].events({
     'click button.view': function (e, template) {
         var handle;
-        var content = template.find('input').value;
+        var content = template.find('#viewArt').value;
         if (template.lastNode.innerText == "Purchase") {
           alert('attempting to purchase content ' + content);
         } else {
@@ -59,7 +59,7 @@ Template['view'].events({
                 window.open('http://localhost:8080/ipfs/' + handle);
 
                 // clear UI text entry field
-                template.find('input').value = '';
+                template.find('#viewArt').value = '';
 
               } else {
                 // UNPAID
@@ -109,8 +109,10 @@ Template['view'].events({
 Template['publish'].events({
     'click button.publish': function (e, template) {
         //const proxyurl = "http://localhost:1337/";
+        
+
         const proxyurl = "";
-        var url = template.find('input').value;
+        var url = template.find('#urlInput').value;
 
         if (url !== "") {
             url = url.replace(/^http:\/\//, '');

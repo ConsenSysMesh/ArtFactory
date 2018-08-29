@@ -5,8 +5,8 @@
 
 <body >
   <header class="navbar navbar-light bg-light justify-content-between" style='margin-bottom: 30px;' >
-    <a class="navbar-brand">ArtFactory</a>
-    <a class="btn btn-bd-download d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3" href="https://github.com/twbs/bootstrap/archive/v4.0.0.zip">Log In</a>
+    <a class="navbar-brand" href="/">ArtFactory</a>
+    <a class="btn btn-bd-download d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3" href="upload">Publish</a>
   </header>
   <div class="container">
     <div class="row">
@@ -31,12 +31,13 @@
   <p>Try it out!</p>
   <p class="lead">
     <div class="input-group ">
-      <input type="text" class="form-control" placeholder="artist, film" aria-label="Recipient's username" aria-describedby="basic-addon2">
+      <input type="text" class="form-control" placeholder="artist, film" id="viewArt">
       <div class="input-group-append">
-        <button class="btn publish" style="background-color: #BFE6BA;" type="button">Search</button>
+        <button class="btn view" style="background-color: #BFE6BA;" type="button">View Art</button>
       </div>
     </div>
   </p>
+  <p></p>
   
 </template>
 
@@ -80,10 +81,10 @@
     <!-- <input type="text">
     <button class="publish btn btn-light">Publish Art (from URL)</button> -->
     <div class="input-group ">
-      <input type="text" class="form-control" placeholder="enter file url" aria-label="Recipient's username" aria-describedby="basic-addon2">
+      <input type="text" class="form-control" placeholder="enter file url" id="urlInput" >
       <div class="input-group-append">
         <button class="btn publish" style="background-color: #BFE6BA;" type="button">Upload</button>
-      </div>
+      </div> 
     </div>
   </div>
   
