@@ -1,0 +1,7 @@
+.App {
+  text-align: center;
+}
+
+.custom-file-label::after {
+	background-color: #D3959B !important;
+}
