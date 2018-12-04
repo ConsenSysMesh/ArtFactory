@@ -1,7 +1,7 @@
 pragma solidity ^0.4.25;
 
 contract ArtFactoryBuilder {
-    address owner;
+    address public owner;
     address[] public artists;
     mapping(address => address) public artistContracts;
     mapping(address => bool) public signedUp;
@@ -36,16 +36,18 @@ contract Artist {
         email         = _email;
         artistAddress = _artistAddress;
     }
-  function newContent(
-    string _videoUrl,
-    string _thumbnailUrl,
-    string _title,
-    string _description,
-    uint128 _price) public returns (address) {
-        Content content = new Content(_videoUrl, _thumbnailUrl, _title, _description, _price, address(this));
-        contents.push(content);
 
-        return content;
+    function newContent(
+        string _videoUrl,
+        string _thumbnailUrl,
+        string _title,
+        string _description,
+        uint128 _price)
+        public returns (address) {
+            Content content = new Content(_videoUrl, _thumbnailUrl, _title, _description, _price, address(this));
+            contents.push(content);
+
+            return content;
     }
 
     //function viewBalance()
@@ -58,7 +60,7 @@ contract Content {
     string public thumbnailUrl;
     string public title;
     string public description;
-    uint128  public price;
+    uint128 public price;
     mapping(address => bool) public viewingAllowed;
 
     constructor(
@@ -74,6 +76,6 @@ contract Content {
           description  = _description;
           price        = _price;
           artist       = _artist;
-  }
+    }
 }
 
