@@ -1,28 +1,28 @@
 import React, { Component } from "react";
 import Header from './Header'
 import Main from './Main'
-import ArtFactoryContract from "../compiled-contracts/ArtFactoryContent.json";
+import ArtFactoryContract from "../contracts/ArtFactoryContent.json";
 import getWeb3 from "../utils/getWeb3";
 import truffleContract from "truffle-contract";
 
 import "../App.css";
- 
+
 class App extends Component {
   constructor () {
     super()
     this.state = {
-      balance: 0, 
-      web3: null, 
-      accounts: null, 
+      balance: 0,
+      web3: null,
+      accounts: null,
       contract: null,
       mediaFiles: null,
-      displayMediaFiles: null 
+      displayMediaFiles: null
     }
 
     //this.updateForm = this.updateForm.bind(this)
   }
 
-    
+
 
   sampleData = [{title: "in my feelings", artist: "Drake"}, {title: "Killing me softly", artist: "fugees"}]
 
@@ -66,12 +66,12 @@ class App extends Component {
   };
 
 
-  
+
 
 
   handleSearch = (searchItem) => {
     //simple react search that only exposes items with matching title or author name
-    // for item in state: {media: []} if the first letters don't match regex() then remove 
+    // for item in state: {media: []} if the first letters don't match regex() then remove
     console.log("handling search");
 
     // this.setState({displayMediaFiles: this.state.mediaFiles.map(name,index){
@@ -85,8 +85,8 @@ class App extends Component {
     if (!this.state.web3) {
       alert = <div className="alert alert-info col-sm-12" role="alert">Loading Web3, accounts, and contract...</div>;
       }
-    
-    return ( 
+
+    return (
     	<div className="App">
     	<Header />
     	<Main />
