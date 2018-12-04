@@ -18,13 +18,7 @@ class App extends Component {
       mediaFiles: null,
       displayMediaFiles: null
     }
-
-    //this.updateForm = this.updateForm.bind(this)
   }
-
-
-
-  sampleData = [{title: "in my feelings", artist: "Drake"}, {title: "Killing me softly", artist: "fugees"}]
 
   componentDidMount = async () => {
     try {
