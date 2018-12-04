@@ -1,5 +1,8 @@
 pragma solidity ^0.4.25;
 
+// ArtFactoryBuilder
+//
+// The core contract that the client interacts with to register new Artists.
 contract ArtFactoryBuilder {
     address public owner;
     address[] public artists;
@@ -15,16 +18,31 @@ contract ArtFactoryBuilder {
         owner = msg.sender;
     }
 
+    // NewArtist          Create a new Artist contract and update state variables
+    // @param _nickname   The nickname of the Artist
+    // @param _email      The email of the artist
+    //
+    // @return address    Returns the address of the new Artist contract
     function newArtist(string _nickname, string _email) public notSignedUp returns (address){
         Artist artist = new Artist(_nickname, _email, msg.sender);
+        // Might be unnecessary to store an array of Artists unless we want to
+        // list some of these artists on the client
         artists.push(msg.sender);
+
+        // Mark the address as already signed up
         signedUp[msg.sender] = true;
+
+        // Store the reference to the Artist contract
         artistContracts[msg.sender] = artist;
 
         return artist;
     }
 }
 
+// Artist
+//
+// The contract that manages the state of the Artist and is responsible for creating and deploying
+// Content contracts. The contract also holds the Ether balance for the artists to withdraw.
 contract Artist {
     address[] public contents;
     string public nickname;
@@ -37,6 +55,15 @@ contract Artist {
         artistAddress = _artistAddress;
     }
 
+
+    // NewContent            Create a new Content contract and update state variables
+    // @param _videoUrl      The IPFS url of the video
+    // @param _thumbnailUrl  The IPFS url of the thumbnail
+    // @param _title         The content title
+    // @param _description   The content description
+    // @param _price         The price that supporters will have to pay to access the content
+    //
+    // @return address       Returns the address of the new Content contract
     function newContent(
         string _videoUrl,
         string _thumbnailUrl,
@@ -45,15 +72,19 @@ contract Artist {
         uint128 _price)
         public returns (address) {
             Content content = new Content(_videoUrl, _thumbnailUrl, _title, _description, _price, address(this));
+            // Store the content in an array so we can access all of an artist's content
             contents.push(content);
 
             return content;
     }
-
+    // TODO: Implement the following
     //function viewBalance()
     //function withdraw()
 }
 
+// Content
+//
+// The contract that manages the state of contents that Artists upload.
 contract Content {
     string public videoUrl;
     address public artist;
