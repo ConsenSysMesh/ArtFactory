@@ -5,15 +5,15 @@ var mnemonic = "spell reduce bike mind cereal decide barely alone sport gather s
 
 module.exports = {
   networks: {
-    ropsten: {
-      provider: function() { return new HDWalletProvider(mnemonic, "https://ropsten.infura.io/"+infura_apikey); },
-      network_id: 3, // Official Ethereum test network
-      gas: 1300000
-    },
-    // development: {
-    //   host: "localhost",
-    //   port: 8545,
-    //   network_id: "*" // Match any network id
-    // }
+    // ropsten: {
+    //   provider: function() { return new HDWalletProvider(mnemonic, "https://ropsten.infura.io/"+infura_apikey); },
+    //   network_id: 3, // Official Ethereum test network
+    //   gas: 1300000
+    // },
+    development: {
+      host: "localhost",
+      port: 8545,
+      network_id: "*" // Match any network id
+    }
   }
 };
