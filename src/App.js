@@ -1,54 +1,49 @@
 import React, { Component } from 'react';
-import ArtFactoryBuilder from "./contracts/ArtFactoryBuilder.json";
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Layout from './components/Layout';
-import LandingPage from './components/home/Index';
+import LandingPage from './components/landing/Index';
 
-import getWeb3 from "./utils/getWeb3";
-import truffleContract from "truffle-contract";
-
+import { Dimmer, Loader } from 'semantic-ui-react'
 
 class App extends Component {
   state = {
     loading: true,
+    drizzleState: null,
     account: null,
   }
 
-  componentDidMount = async () => {
-    try {
-      // Get network provider and web3 instance.
-      const web3 = await getWeb3();
+  componentWillMount() {
+    const { drizzle } = this.props;
 
-      // Use web3 to get the user's accounts.
-      const accounts = await web3.eth.getAccounts();
+    // subscribe to changes in the store
+    this.unsubscribe = drizzle.store.subscribe(() => {
 
-      // Get the contract instance.
-      const Contract = truffleContract(ArtFactoryBuilder);
-      Contract.setProvider(web3.currentProvider);
-      const instance = await Contract.deployed();
+      // every time the store updates, grab the state from drizzle
+      const drizzleState = drizzle.store.getState();
 
-      // Set web3, accounts, and contract to the state, and then proceed with an
-      // example of interacting with the contract's methods.
-      this.setState({ web3, accounts, contract: instance });
-    } catch (error) {
-      // Catch any errors for any of the above operations.
-      //alert('Failed to load web3, accounts, or contract. Check console for details.');
-      console.log(error);
-    }
-  };
-
-
+      // check to see if it's ready, if so, update local component state
+      if (drizzleState.drizzleStatus.initialized) {
+        this.setState({
+          loading: false,
+          account: drizzleState.accounts[0],
+          drizzleState
+        });
+      }
+    });
+  }
 
   render() {
-    if (!this.state.web3) return "Loading...";
+    const { loading, account } = this.state
+
+    if(loading)
+      return "Loading Web3, accounts, and contracts...";
 
     return (
       <Router>
-        <Layout account={this.state.account} >
-
-          <Route exact path="/"  render={ (props) => <LandingPage />} />
+        <Layout account={account} drizzle={this.props.drizzle} drizzleState={this.state.drizzleState} >
+          <Route exact path="/" render={ () => <LandingPage drizzle={this.props.drizzle} drizzleState={this.state.drizzleState} />} />
         </Layout>
       </Router>
     );

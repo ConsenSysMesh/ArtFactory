@@ -1,24 +1,38 @@
 import React, { Component } from 'react'
-import { Button, Header, Image, Modal, Icon, Form} from 'semantic-ui-react'
+import { Button, Modal, Icon, Form} from 'semantic-ui-react'
 
 class SignupModal extends Component {
   state = {
     modalOpen: false,
     email: null,
     nickname: null,
-  }
-
-  constructor(props){
-    super(props)
+    createArtistId: null,
   }
 
   handleOpen  = () => this.setState({ modalOpen: true })
   handleClose = () => this.setState({ modalOpen: false })
 
-  handleSignup = () => {
+  handleSignup = async () => {
+    const { drizzle, drizzleState } = this.props;
+    const { nickname, email } = this.state
 
+    const contract = drizzle.contracts.ArtFactoryBuilder;
+
+    const createArtistId = contract.methods["createArtist"]
+                                   .cacheSend(nickname, email, { from: drizzleState.accounts[0]});
+
+    this.setState({ createArtistId });
   }
 
+  getTxStatus = () => {
+    const { transactions, transactionStack } = this.props.drizzleState;
+
+    const txHash = transactionStack[this.state.createArtistId];
+
+    if (!txHash) return null;
+
+    return transactions[txHash].status;
+  };
 
   render() {
     return(
@@ -36,11 +50,11 @@ class SignupModal extends Component {
                 <label>Email</label>
                 <input placeholder='Email' onChange={(e) => {this.setState({email: e.target.value})}} />
               </Form.Field>
-
             </Form>
-
-
           </Modal.Description>
+
+          <h3>{!!this.getTxStatus() && `Transaction status: ${this.getTxStatus()}`}</h3>
+
         </Modal.Content>
 
         <Modal.Actions>

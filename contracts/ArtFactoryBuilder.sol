@@ -7,10 +7,9 @@ contract ArtFactoryBuilder {
     address public owner;
     address[] public artists;
     mapping(address => address) public artistContracts;
-    mapping(address => bool) public signedUp;
 
     modifier notSignedUp {
-        require(!signedUp[msg.sender]);
+        require(artistContracts[msg.sender] == 0);
         _;
     }
 
@@ -18,19 +17,16 @@ contract ArtFactoryBuilder {
         owner = msg.sender;
     }
 
-    // NewArtist          Create a new Artist contract and update state variables
+    // createArtist       Create a new Artist contract and update state variables
     // @param _nickname   The nickname of the Artist
     // @param _email      The email of the artist
     //
     // @return address    Returns the address of the new Artist contract
-    function newArtist(string _nickname, string _email) public notSignedUp returns (address){
+    function createArtist(string _nickname, string _email) public notSignedUp returns (address){
         Artist artist = new Artist(_nickname, _email, msg.sender);
         // Might be unnecessary to store an array of Artists unless we want to
         // list some of these artists on the client
         artists.push(msg.sender);
-
-        // Mark the address as already signed up
-        signedUp[msg.sender] = true;
 
         // Store the reference to the Artist contract
         artistContracts[msg.sender] = artist;
@@ -64,7 +60,7 @@ contract Artist {
     // @param _price         The price that supporters will have to pay to access the content
     //
     // @return address       Returns the address of the new Content contract
-    function newContent(
+    function createContent(
         string _videoUrl,
         string _thumbnailUrl,
         string _title,
