@@ -1,18 +1,51 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react';
+import { Menu } from 'semantic-ui-react';
+import styled from 'styled-components'
 
-// The Header creates links that can be used to navigate
-// between routes.
+import SignupModal from './home/SignupModal';
 
+const MenuWrapper = styled.div`
+  border-bottom: 1px solid #e6e4e4;
+`
+const Logo = styled.p`
+  font-size:20px;
+  color: black;
+  text-decoration: none;
+`
 
-const Header = () => (
-  
-  <header className="navbar navbar-light bg-light justify-content-between" style={{marginBottom: '30px'}} >
-    <Link to='/' className="navbar-brand" href="/">ArtFactory</Link>
-    <Link to='/upload' className="btn btn-bd-download d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3" href="upload">Publish</Link>
-  </header>
-  
-)
+class Header extends Component {
 
+  displayAccountNumber() {
+    const { account } = this.props;
+    return account ? `${account.slice(0, 7)}...${account.slice(-3)}` : 'Signup'
+  }
 
-export default Header
+  OnAccountNumberClick = () => {
+    this.signupModal.handleOpen();
+  }
+
+  render() {
+    return(
+      <div>
+      <MenuWrapper>
+        <Menu secondary size="large">
+          <Menu.Item>
+            <a href="/">
+              <Logo>ArtFactory</Logo>
+            </a>
+          </Menu.Item>
+          <Menu.Menu position='right'>
+            <Menu.Item onClick={this.OnAccountNumberClick}>{this.displayAccountNumber()}</Menu.Item>
+          </Menu.Menu>
+        </Menu>
+      </MenuWrapper>
+      <SignupModal
+        ref={ instance => { this.signupModal = instance } }
+      />
+      </div>
+    )
+  }
+
+}
+
+export default Header;
