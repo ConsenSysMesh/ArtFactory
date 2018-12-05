@@ -10,10 +10,10 @@ module.exports = {
       network_id: 3, // Official Ethereum test network
       gas: 1300000
     },
-    // development: {
-    //   host: "localhost",
-    //   port: 8545,
-    //   network_id: "*" // Match any network id
-    // }
+    development: {
+      host: "localhost",
+      port: 8545,
+      network_id: "*" // Match any network id
+    }
   }
 };
