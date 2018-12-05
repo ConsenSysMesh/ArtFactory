@@ -16,7 +16,7 @@ class SignupModal extends Component {
     const { drizzle, drizzleState } = this.props;
     const { nickname, email } = this.state
 
-    const contract = drizzle.contracts.ArtFactoryBuilder;
+    const contract = drizzle.contracts.ArtFactory;
 
     const createArtistId = contract.methods["createArtist"]
                                    .cacheSend(nickname, email, { from: drizzleState.accounts[0]});

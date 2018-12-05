@@ -8,12 +8,12 @@ import './index.css';
 
 import { Drizzle, generateStore } from 'drizzle'
 
-import ArtFactoryBuilder from './contracts/ArtFactoryBuilder.json'
+import ArtFactory from './contracts/ArtFactory.json'
 
 
 const options = {
   contracts: [
-    ArtFactoryBuilder,
+    ArtFactory,
   ]
 }
 

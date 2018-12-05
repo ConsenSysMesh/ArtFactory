@@ -1,6 +1,6 @@
-var ArtFactoryBuilder = artifacts.require("./ArtFactoryBuilder.sol");
+var ArtFactory = artifacts.require("./ArtFactory.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(ArtFactoryBuilder);
+  deployer.deploy(ArtFactory);
 };
 

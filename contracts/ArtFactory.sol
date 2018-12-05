@@ -25,7 +25,7 @@ contract ArtFactory {
     address[] public artists;
     mapping(address => Artist) public artistMapping;
     mapping(address => bool) public signedUp;
-    mapping(address => Content[]) public artistContents;
+    mapping(address => Content[]) public contentsMapping;
     mapping(address => uint) public balances;
 
     modifier notSignedUp {
@@ -50,6 +50,7 @@ contract ArtFactory {
         artists.push(msg.sender);
 
         // Set the address as signed up
+        signedUp[msg.sender] = true;
         artistMapping[msg.sender] = artist;
 
         return true;
@@ -74,7 +75,7 @@ contract ArtFactory {
 
             // Store the content in an array so we can access all of an artist's content
 
-            artistContents[msg.sender].push(content);
+            contentsMapping[msg.sender].push(content);
             // Artist storage artist = artistMapping[msg.sender];
             // artist.contents.push(content);
 
