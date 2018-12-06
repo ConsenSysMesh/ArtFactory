@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Modal, Icon, Form} from 'semantic-ui-react'
+import getTransactionStatus from '../../utils/getTransactionStatus'
 
 class SignupModal extends Component {
   state = {
@@ -24,20 +25,11 @@ class SignupModal extends Component {
     this.setState({ createArtistId });
   }
 
-  getTxStatus = () => {
-    const { transactions, transactionStack } = this.props.drizzleState;
-
-    const txHash = transactionStack[this.state.createArtistId];
-
-    if (!txHash) return null;
-
-    return transactions[txHash].status;
-  };
-
   render() {
+    const transactionStatus = getTransactionStatus(this.props.drizzleState, this.state.createArtistId)
     return(
       <Modal open={this.state.modalOpen} onClose={this.handleClose} >
-        <Modal.Header>Signup</Modal.Header>
+        <Modal.Header>Create A New Account</Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <Form>
@@ -53,7 +45,7 @@ class SignupModal extends Component {
             </Form>
           </Modal.Description>
 
-          <h3>{!!this.getTxStatus() && `Transaction status: ${this.getTxStatus()}`}</h3>
+          <h3>{!!transactionStatus && `Transaction status: ${transactionStatus}`}</h3>
 
         </Modal.Content>
 

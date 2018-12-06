@@ -14,12 +14,30 @@ const Logo = styled.p`
 `
 
 class Header extends Component {
+  state = {
+    isArtistDataKey: null
+  }
 
   displayAccountNumber() {
-    return 'Start';
     // TODO: Implement logic to display address if user is already registered as artist
     const { account } = this.props;
-    return account ? `${account.slice(0, 7)}...${account.slice(-3)}` : 'Start'
+    return this.isArtist() ? `${account.slice(0, 7)}...${account.slice(-3)}` : 'Start'
+  }
+
+  componentDidMount() {
+    const { drizzle, drizzleState } = this.props;
+    const { nickname, email } = this.state
+
+    const contract = drizzle.contracts.ArtFactory;
+    const isArtistDataKey = contract.methods["signedUp"].cacheCall(drizzleState.accounts[0])
+    this.setState({ isArtistDataKey });
+  }
+
+  isArtist() {
+    const { ArtFactory } = this.props.drizzleState.contracts;
+
+    const isArtistRequest = ArtFactory.signedUp[this.state.isArtistDataKey];
+    return isArtistRequest ? isArtistRequest.value : false;
   }
 
   OnAccountNumberClick = () => {
