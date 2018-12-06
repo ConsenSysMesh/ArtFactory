@@ -1,13 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './components/App';
+
+import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-import {BrowserRouter} from 'react-router-dom'
+import './index.css';
 
-ReactDOM.render((
-	<BrowserRouter>
-		<App />
-	</BrowserRouter>), document.getElementById('root'));
+import { Drizzle, generateStore } from 'drizzle'
+
+import ArtFactory from './contracts/ArtFactory.json'
+
+
+const options = {
+  contracts: [
+    ArtFactory,
+  ]
+}
+
+const drizzleStore = generateStore(options)
+const drizzle = new Drizzle(options, drizzleStore)
+
+ReactDOM.render(<App drizzle={drizzle}/>, document.getElementById("root"));
+
 registerServiceWorker();

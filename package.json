@@ -4,15 +4,19 @@
   "private": true,
   "dependencies": {
     "bignumber.js": "^7.2.1",
+    "drizzle": "^1.2.4",
     "file-system": "^2.2.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
+    "semantic-ui-css": "^2.2.14",
+    "semantic-ui-react": "^0.83.0",
+    "styled-components": "^4.1.2",
     "truffle-contract": "^4.0.0-next.0",
-    "web3": "^1.0.0-beta.36",
-    "truffle-hdwallet-provider": "^0.0.6"
+    "truffle-hdwallet-provider": "^0.0.6",
+    "web3": "^1.0.0-beta.36"
   },
   "scripts": {
     "start": "react-scripts start",
