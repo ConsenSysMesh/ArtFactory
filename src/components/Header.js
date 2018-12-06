@@ -41,7 +41,11 @@ class Header extends Component {
   }
 
   OnAccountNumberClick = () => {
-    this.signupModal.handleOpen();
+    if(this.isArtist()){
+      console.log("isArtist")
+    }else{
+      this.signupModal.handleOpen();
+    }
   }
 
   render() {
