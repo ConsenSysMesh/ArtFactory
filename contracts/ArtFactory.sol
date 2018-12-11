@@ -43,7 +43,7 @@ contract ArtFactory {
         successful = true;
     }
 
-    // @param _artData       The DNA of the piece, which is decrypted by the client
+    // @param _artData       The DNA of the piece, which is decrypted for the client
     // @param _price         The price that consumers pay to decrypt the data
 
     function createContent(
