@@ -1,88 +1,84 @@
 pragma solidity ^0.4.15;
 
+import "./SafeMath.sol";
+
 // ArtFactory
 //
 // The core contract that the client interacts with to manage artists and their uploaded content.
 contract ArtFactory {
+    using SafeMath for uint256;
 
-    struct Content{
-        string videoUrl;
-        string thumbnailUrl;
-        string title;
-        string description;
-        uint128 price;
-        mapping(address => bool) viewingAllowed;
-    }
+	// authorizedToView[_contentId][msg.sender]
+    mapping(uint64 => mapping(address => bool)) authorizedToView;
 
-    struct Artist{
-        string nickname;
-        string email;
-        address artistAddress;
-        // Content[] contents;
-    }
+	// *[_contentId]
+    mapping(uint64 => uint256) artData;
+    mapping(uint64 => uint256) price;
+
+	// ownedBy[msg.sender][_contentId]
+    mapping(address => mapping(uint64 => bool)) ownedBy;
 
     address public owner;
-    address[] public artists;
-    mapping(address => Artist) public artistMapping;
-    mapping(address => bool) public signedUp;
-    mapping(address => Content[]) public contentsMapping;
-    mapping(address => uint) public balances;
+    uint64 count;
+    mapping(address => uint256) public balances;
 
-    modifier notSignedUp {
-        require(!signedUp[msg.sender]);
+    modifier SignedUp {
+        require(ownedBy[msg.sender][uint64(0)] == true);
+        _;
+    }
+
+    modifier NotSignedUp {
+        require(ownedBy[msg.sender][uint64(0)] != true);
         _;
     }
 
     constructor () public {
         owner = msg.sender;
+        count = 1;
     }
 
-    // createArtist       Create a new Artist contract and update state variables
-    // @param _nickname   The nickname of the Artist
-    // @param _email      The email of the artist
-    //
-    // @return address    Returns the address of the new Artist contract
-    function createArtist(string _nickname, string _email) public notSignedUp returns (bool){
-        // Content[] memory emptyContents;
-        Artist memory artist = Artist(_nickname, _email, msg.sender);//, emptyContents);
-        // Might be unnecessary to store an array of Artists unless we want to
-        // list some of these artists on the client
-        artists.push(msg.sender);
+    function signUp() public NotSignedUp returns (bool successful) {
+        ownedBy[msg.sender][uint64(0)] = true;
 
-        // Set the address as signed up
-        signedUp[msg.sender] = true;
-        artistMapping[msg.sender] = artist;
-
-        return true;
+        successful = true;
     }
 
-    // NewContent            Create a new Content contract and update state variables
-    // @param _videoUrl      The IPFS url of the video
-    // @param _thumbnailUrl  The IPFS url of the thumbnail
-    // @param _title         The content title
-    // @param _description   The content description
-    // @param _price         The price that supporters will have to pay to access the content
-    //
-    // @return address       Returns the address of the new Content contract
+    // @param _artData       The DNA of the piece, which is decrypted for the client
+    // @param _price         The price that consumers pay to decrypt the data
+
     function createContent(
-        string _videoUrl,
-        string _thumbnailUrl,
-        string _title,
-        string _description,
-        uint128 _price)
-        public returns (bool) {
-            Content memory content = Content(_videoUrl, _thumbnailUrl, _title, _description, _price);
+        uint256 _artData,
+        uint256 _price)
+        public returns (bool successful) {
+            count ++;
+            artData[count] = _artData;
+            price[count] = _price;
+            ownedBy[msg.sender][count] = true;
 
-            // Store the content in an array so we can access all of an artist's content
-
-            contentsMapping[msg.sender].push(content);
-            // Artist storage artist = artistMapping[msg.sender];
-            // artist.contents.push(content);
-
-            return true;
+            successful = true;
     }
-    // TODO: Implement the following
-    //function viewBalance()
-    //function withdraw()
+
+    function viewBalance(address _address) public view returns (uint256) {
+        return balances[_address];
+    }
+
+    event Withdrawal(
+        address indexed _by,
+        uint _value
+    );
+    function withdraw(uint256 _amount) public {
+        balances[msg.sender].sub(_amount);
+        msg.sender.transfer(_amount);
+        emit Withdrawal(msg.sender, _amount);
+    }
+    
+    event Deposit(
+        address indexed _from,
+        uint _value
+    );
+    function deposit() public SignedUp payable {
+        balances[msg.sender].add(msg.value);
+        emit Deposit(msg.sender, msg.value);
+    }
 }
 
